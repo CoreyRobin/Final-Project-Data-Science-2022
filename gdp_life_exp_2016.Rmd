@@ -10,10 +10,11 @@ library(tidyverse)
 library(ggplot2)
 library(dplyr)
 library(tidyr)
+library(RCurl)
 ```
 
 ```{r}
-gdp_life_exp_2016 <- read.csv("C:/Users/corey/OneDrive/Documents/Florida Poly/Intro to Data Science/Homework/week1/week1/life_wealth_2016.csv")
+gdp_life_exp_2016 <- read.csv("https://raw.githubusercontent.com/CoreyRobin/Final-Project-Data-Science-2022/master/life_wealth_2016.csv")
 ```
 
 ```{r}
@@ -56,8 +57,9 @@ ggplot(data = my_df, aes(x= country, y =gdp_percap))+
 ```{r}
 #This particular data set is a 'bit' larger, but I think that it will be more useful since we can observe the change of a country's GDP and life expectancy over the course of a few years rather than just one.
 # 'Sigh'....Here we go.
-GDP_years_world<- read_csv("C:/Users/corey/OneDrive/Documents/Florida Poly/Intro to Data Science/Homework/week3/week3/nations.csv")
+GDP_years_world<- read.csv("https://raw.githubusercontent.com/CoreyRobin/Final-Project-Data-Science-2022/master/nations.csv")
 ```
+
 ```{r}
 #OK. Now we're going to see what were working with and compile a list of countries that I want to analyze the data of. 
 view(GDP_years_world)
@@ -99,12 +101,23 @@ ggplot(data = my_df_v2) +
   labs(title = "My DF Experiment") 
 ```
 ```{r}
+#Finally we have the "ULTIMATE GDP CHART". This chart uses the data that is present within the 'my_df_v2 and presents it in a 3 by 4 grid that showcases all of the GDP growths of each countries over the consecutive years that are present in the data frame. As opposed to the previous visualization which showcased all of the data points stacked one on top of the other, this one shows the change in the GDP of each country over a few generations in addition to the change in population (as demonstrated by the change in color on the side legend). This graph is incredibly helpful for research that deals with GDP and it's relationship to population. While its difficult to observe the population in the less extreme cases, comparing countries that are outlines in either end of the population spectrum might give a more clear indication of hoe GDP might affect a countries growth. 
 ggplot(data = my_df_v2) + 
   geom_point(aes(x = year, y = gdp_percap, color = population), 
-             alpha = 0.6) + 
+             alpha = 0.8) + 
   facet_wrap(~country) +
-  labs(title = "The Ultimately GDP Chart")
+  labs(title = "The Ultimate GDP Chart")
 ```
+```{r}
+#In this last visualization, I sought to compare the change in life expectancy throughout the years as well as how the GDP correlates to the change in GDP of each of the countries. The data is neat and the coordinates are easily readable. It's finished! DOBBY IS FREE!!!(Harry Potter reference)
+ggplot(data = my_df_v2)+
+geom_point(aes(x=year, y= life_expect, color = gdp_percap),
+           alpha= 0.8) +
+  facet_wrap(~country)+
+  labs(title = "Correlation between Life Expectancy and The Growth of a Country's GDP")
+```
+
+
 
 
 
