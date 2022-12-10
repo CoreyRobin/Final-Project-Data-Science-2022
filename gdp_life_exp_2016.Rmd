@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ---
 title: "GDP_Experiment"
 author: "Corey"
@@ -131,3 +132,125 @@ geom_point(aes(x=year, y= life_expect, color = gdp_percap),
 
 
 
+=======
+---
+title: "GDP_Experiment"
+author: "Corey"
+date: "2022-11-16"
+output: html_document
+---
+
+```{r,  message=FALSE}
+library(tidyverse)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+```
+
+```{r}
+gdp_life_exp_2016 <- read.csv("C:/Users/corey/OneDrive/Documents/Florida Poly/Intro to Data Science/Homework/week1/week1/life_wealth_2016.csv")
+```
+
+```{r}
+head(gdp_life_exp_2016)
+```
+
+```{r}
+view(gdp_life_exp_2016)
+```
+
+
+```{r}
+#Filtering out the data that I am going to use in my presentation. In this case I am filtering out the rows that contain the data for: The United States, The United Arab Emirates, The Korean Republic, Canada, South Africa, China, Venezuela, Brazil, Niger, and Ukraine. I am able to filter out these rows by targeting my desired column (in this case it's countries) and selecting the country names in a vector.
+##For this particular data set, most of the countries that I selected have data for both the life expectancy and the GDP (Gross Domestic Product) percapita. The only country that doesn't follow this trend is Venezuela, which is missing data for it's GDP percapita in the year 2016. This may cause issues for future data manipulation and visualization. 
+my_df <- gdp_life_exp_2016 %>% 
+  filter(country %in% c("United States", "Canada", "United Arab Emirates", "Korea, Rep.", "South Africa", "China", "Venezuela, RB", "Brazil", "Niger","Ukraine" ))
+my_df
+```
+
+```{r}
+#For this particular data 
+ggplot(data = my_df, aes(x= country, y =life_expect))+
+  geom_bar(stat = "identity") +
+  labs(title = "The Life Expectency of my Data Frame") +
+  coord_flip()
+  
+```
+
+```{r}
+#Uh-Oh. For this particular data set it appears that Venezuela has been omitted from this chart due to the fact that it does not contain data for its GDP percapita. This could be due the humanitarian crisis that Venezuela under went in the year 2016. Moving forward this might cause problems. In this case we have one of two options.
+#1. I can replace Venezuela we a country that actually contains data for data for this row.
+#  OR
+#2. Suffe- I mean utilize a different data set, filter out the necessary countries and then compare using data visualization. I think I have a data set in mind
+ggplot(data = my_df, aes(x= country, y =gdp_percap))+
+  geom_bar(stat = "identity") +
+  labs(title = "GDP Percapita For Ten Countries") +
+  coord_flip()
+```
+
+```{r}
+#This particular data set is a 'bit' larger, but I think that it will be more useful since we can observe the change of a country's GDP and life expectancy over the course of a few years rather than just one.
+# 'Sigh'....Here we go.
+GDP_years_world<- read_csv("C:/Users/corey/OneDrive/Documents/Florida Poly/Intro to Data Science/Homework/week3/week3/nations.csv")
+```
+```{r}
+#OK. Now we're going to see what were working with and compile a list of countries that I want to analyze the data of. 
+view(GDP_years_world)
+```
+
+```{r}
+#Well I went from 10 rows of data to 270 rows of data(internally screaming)! Well at the very least there are no present NA values for any of the data frame,and to check this we can use an iteration to find out if there are any Na's present in this data set.
+my_df_v2<- GDP_years_world %>% 
+  filter(country %in% c("United States","Venezuela, RB", "Ukraine", "China", "Brazil", "United Arab Emirates", "South Africa", "Niger", "Korea, Rep.", "Canada"))
+my_df_v2
+```
+```{r}
+ #Since we do have over 270 rows of unique data entries, it would be best to split the countries up and analyze the change in GDP over the course of the years provided.
+my_df_China<- my_df_v2 %>% 
+  filter(country %in% c("China"))
+my_df_China
+```
+```{r}
+#For this particular data set, I extracted the data that was present for the country 'China'. The idea of this data set was similar to the last one, in which I wanted to see the GDP independent of all other data listed in the data frame. As we can see China has clear exponential growth in it's GDP throughout the years. This is most likely due to China becoming one of the largest exporters in the world and with the dawn of a new dynasty being integrated into Chinese legislature, economic growth and China was peeking at an all time high in about the 2000's.
+ggplot(data = my_df_China) +
+  geom_point(aes(x= year, y = gdp_percap)) +
+  labs(title = "GDP of China")
+```
+```{r}
+my_df_Arab <- my_df_v2 %>% 
+  filter(country %in% c("United Arab Emirates"))
+my_df_Arab
+```
+```{r}
+ggplot(data = my_df_Arab) +
+  geom_point(aes(x= year, y = gdp_percap)) +
+  labs(title = "GDP of The Arabian Emirates")
+```
+```{r}
+#Now that we've done graphical representations of both the Arab Emirates and China, we can now move on to comparing all the countries that are present within my data set. Since it is a rather large quantity of data to calculate all at once, it would probably be best to test out three graphical representation and see which one is the best at handling data frames with large quantities of observations.
+#This one looks great, however the data gets a little congested around the bottom, making it difficult to decipher what points correlate to which countries. ON TO THE NEXT ONE!!
+ggplot(data = my_df_v2) +
+  geom_point(aes(x= year, y = gdp_percap, color = country)) +
+  labs(title = "My DF Experiment") 
+```
+```{r}
+ggplot(data = my_df_v2) + 
+  geom_point(aes(x = year, y = gdp_percap, color = population), 
+             alpha = 0.6) + 
+  facet_wrap(~country) +
+  labs(title = "The Ultimately GDP Chart")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+>>>>>>> ae76d233a6a4184175c2e32f32d261173cff7e78
